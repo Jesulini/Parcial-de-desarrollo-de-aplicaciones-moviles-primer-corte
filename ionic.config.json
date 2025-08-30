@@ -1,0 +1,7 @@
+{
+  "name": "Storm TV",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
