@@ -1,15 +1,24 @@
 import { Injectable } from '@angular/core';
-import { of, throwError } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  login(email: string, password: string) {
-    if (email === 'test@correo.com' && password === '123456') {
-      return of({ success: true, token: 'fake-jwt-token' });
-    } else {
-      return throwError(() => new Error('Credenciales inválidas'));
+  private isLoggedIn = false;
+
+  login(email: string, password: string): boolean {
+    if (email === 'test@test.com' && password === '123456') {
+      this.isLoggedIn = true;
+      return true;
     }
+    return false;
+  }
+
+  logout() {
+    this.isLoggedIn = false;
+  }
+
+  isAuthenticated(): boolean {
+    return this.isLoggedIn;
   }
 }
