@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { UsersService } from '../services/users';
 
 @Component({
   selector: 'app-register',
@@ -21,9 +22,10 @@ export class RegisterPage implements OnInit {
     }
   };
 
-  countries: any[] = []; // aquí guardamos la lista de países con banderas
+  countries: any[] = [];
+  errorMessage: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private usersService: UsersService) {}
 
   ngOnInit() {
     this.loadCountries();
@@ -36,18 +38,44 @@ export class RegisterPage implements OnInit {
           if (res?.data) {
             this.countries = res.data.map((c: any) => ({
               id: c.name,
+              flag: c.unicodeFlag,
+              name: c.name,
               value: `${c.unicodeFlag} ${c.name}`
             }));
           }
         },
-        error: (err) => {
-          console.error('Error al cargar países:', err);
-        }
+        error: (err) => console.error('Error al cargar países:', err)
       });
   }
 
   onRegister() {
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
+
+    // Validar campos obligatorios
+    if (!this.user.name || !this.user.lastName || !this.user.email || !this.user.password || !this.user.country.id) {
+      this.errorMessage = 'Todos los campos son obligatorios';
+      return;
+    }
+
+    // Validar email
+    if (!emailRegex.test(this.user.email)) {
+      this.errorMessage = 'Correo no válido';
+      return;
+    }
+
+    this.errorMessage = '';
+    this.usersService.saveUser(this.user);
+    alert('Usuario registrado correctamente!');
     console.log('Usuario registrado:', this.user);
-    alert(JSON.stringify(this.user, null, 2));
+
+    // Reset opcional del formulario
+    this.user = {
+      id: crypto.randomUUID(),
+      name: '',
+      lastName: '',
+      email: '',
+      password: '',
+      country: { id: '', value: '' }
+    };
   }
 }

@@ -30,13 +30,15 @@
     <ion-label>País</ion-label>
     <ion-select [(ngModel)]="user.country" interface="popover">
       <ion-select-option *ngFor="let c of countries" [value]="c">
-        {{ c.value }}
+        <span>{{ c.flag }}</span> {{ c.name }}
       </ion-select-option>
     </ion-select>
   </ion-item>
 
-  <ion-button expand="block" (click)="onRegister()">
-    Registrarse
-  </ion-button>
+  <ion-button expand="block" (click)="onRegister()">Registrarse</ion-button>
+
+  <p *ngIf="errorMessage" style="color: red; margin-top: 10px;">
+    {{ errorMessage }}
+  </p>
 
 </ion-content>

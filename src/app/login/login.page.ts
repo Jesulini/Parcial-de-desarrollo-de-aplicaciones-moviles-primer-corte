@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-
+import { UsersService } from '../services/users';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,22 +10,35 @@ import { IonicModule } from '@ionic/angular';
 })
 export class LoginPage {
 
-  // Modelo del formulario
   user = {
     email: '',
     password: ''
   };
 
-  constructor() {}
+  errorMessage: string = '';
+
+  constructor(private usersService: UsersService, private router: Router) {}
 
   onLogin() {
-    // Creamos el objeto JSON igual al que pasaste
-    const loginData = {
-      email: this.user.email,
-      password: this.user.password
-    };
+    if (!this.user.email || !this.user.password) {
+      this.errorMessage = 'Todos los campos son obligatorios';
+      return;
+    }
 
-    console.log('Login data:', loginData);
-    alert(JSON.stringify(loginData, null, 2));
+    const user = this.usersService.getUserByEmail(this.user.email);
+    if (!user) {
+      this.errorMessage = 'Usuario no encontrado';
+      return;
+    }
+
+    if (user.password !== this.user.password) {
+      this.errorMessage = 'Contraseña incorrecta';
+      return;
+    }
+
+    this.errorMessage = '';
+
+    // Redirigir al HomePage
+    this.router.navigate(['/home']);
   }
 }
