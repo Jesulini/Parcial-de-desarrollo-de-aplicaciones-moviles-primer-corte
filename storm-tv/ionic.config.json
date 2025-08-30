@@ -1,5 +1,7 @@
 {
-  "name": "ionic-app-base",
-  "integrations": {},
+  "name": "Storm TV",
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
