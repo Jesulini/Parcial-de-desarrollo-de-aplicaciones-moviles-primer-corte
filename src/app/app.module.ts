@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
+
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpClientModule } from '@angular/common/http'; // 👈 IMPORTANTE
 
 @NgModule({
   declarations: [AppComponent],
@@ -12,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http'; // 👈 IMPORTANTE
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule   // 👈 habilita peticiones HTTP
+    HttpClientModule // 👈 agrega esto
   ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],

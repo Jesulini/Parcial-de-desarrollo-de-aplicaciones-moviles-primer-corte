@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -6,11 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./register.page.scss'],
   standalone: false,
 })
-export class RegisterPage {
+export class RegisterPage implements OnInit {
 
-  // Modelo del formulario
   user = {
-    id: crypto.randomUUID(), // genera UUID
+    id: crypto.randomUUID(),
     name: '',
     lastName: '',
     email: '',
@@ -21,15 +21,30 @@ export class RegisterPage {
     }
   };
 
-  // Lista de países (ejemplo simple, podrías llenarlo con la API que vimos)
-  countries = [
-    { id: 'Colombia', value: '🇨🇴 Colombia' },
-    { id: 'Mexico', value: '🇲🇽 México' },
-    { id: 'USA', value: '🇺🇸 Estados Unidos' },
-    { id: 'Argentina', value: '🇦🇷 Argentina' }
-  ];
+  countries: any[] = []; // aquí guardamos la lista de países con banderas
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    this.loadCountries();
+  }
+
+  loadCountries() {
+    this.http.get<any>('https://countriesnow.space/api/v0.1/countries/flag/unicode')
+      .subscribe({
+        next: (res) => {
+          if (res?.data) {
+            this.countries = res.data.map((c: any) => ({
+              id: c.name,
+              value: `${c.unicodeFlag} ${c.name}`
+            }));
+          }
+        },
+        error: (err) => {
+          console.error('Error al cargar países:', err);
+        }
+      });
+  }
 
   onRegister() {
     console.log('Usuario registrado:', this.user);
