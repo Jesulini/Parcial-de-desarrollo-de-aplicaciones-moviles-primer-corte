@@ -1,30 +1,42 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
-    </ion-buttons>
     <ion-title>Configuraciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goHome()">Volver</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-list>
 
-  <ion-item>
-    <ion-label>Modo Claro / Oscuro</ion-label>
-    <ion-toggle slot="end" (ionChange)="toggleDarkMode($event)"></ion-toggle>
-  </ion-item>
+    <ion-item>
+      <ion-label>Notificaciones</ion-label>
+      <ion-toggle [(ngModel)]="notifications" (ionChange)="toggleNotifications()"></ion-toggle>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Notificaciones</ion-label>
-    <ion-toggle slot="end" [(ngModel)]="notificationsEnabled"></ion-toggle>
-  </ion-item>
+    <ion-item>
+      <ion-label>Vibración</ion-label>
+      <ion-toggle [(ngModel)]="vibration" (ionChange)="toggleVibration()"></ion-toggle>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>Idioma</ion-label>
-    <ion-select [(ngModel)]="selectedLanguage">
-      <ion-select-option value="es">Español</ion-select-option>
-      <ion-select-option value="en">Inglés</ion-select-option>
-    </ion-select>
-  </ion-item>
+    <ion-item>
+      <ion-label>Tema claro/oscuro</ion-label>
+      <ion-toggle [(ngModel)]="darkTheme" (ionChange)="toggleDarkTheme()"></ion-toggle>
+    </ion-item>
 
+    <ion-item>
+      <ion-label>Mantener sesión abierta</ion-label>
+      <ion-toggle [(ngModel)]="keepSession" (ionChange)="toggleKeepSession()"></ion-toggle>
+    </ion-item>
+
+    <ion-item button (click)="logout()">
+      <ion-label color="primary">Cerrar sesión</ion-label>
+    </ion-item>
+
+    <ion-item button (click)="deleteAccount()">
+      <ion-label color="danger">Borrar cuenta</ion-label>
+    </ion-item>
+
+  </ion-list>
 </ion-content>

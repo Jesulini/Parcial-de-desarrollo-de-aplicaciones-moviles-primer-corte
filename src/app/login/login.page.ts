@@ -38,6 +38,9 @@ export class LoginPage {
 
     this.errorMessage = '';
 
+    // 👉 Guardar usuario actual en LocalStorage
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
     // Redirigir al HomePage
     this.router.navigate(['/home']);
   }

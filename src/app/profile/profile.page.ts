@@ -1,54 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
+import { UsersService } from '../services/users';
+import { Router } from '@angular/router';
 
 @Component({
-  standalone: false,
   selector: 'app-profile',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
+  standalone: false,
 })
 export class ProfilePage implements OnInit {
+  user: any = {};
+  showPassword: boolean = false; 
+  successMessage: string = "";
 
-  user: any = { name: '', lastName: '', email: '', country: '' };
-  countries: any[] = [];
-
-  constructor(private alertController: AlertController, private http: HttpClient) {}
+  constructor(private usersService: UsersService, private router: Router) {}
 
   ngOnInit() {
-    this.loadUser();
-    this.loadCountries();
+    this.user = this.usersService.getCurrentUser();
   }
 
-  loadUser() {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (users.length > 0) {
-      this.user = users[users.length - 1]; // último usuario registrado/logeado
-    }
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
-  loadCountries() {
-    this.http.get<any>('https://countriesnow.space/api/v0.1/countries/flag/unicode')
-      .subscribe(res => {
-        if (res.data) {
-          this.countries = res.data;
-        }
-      });
+  saveProfile() {
+    this.usersService.updateUser(this.user);
+    this.successMessage = "✅ Perfil actualizado correctamente";
+
+    // Ocultar mensaje después de 3 segundos
+    setTimeout(() => {
+      this.successMessage = "";
+    }, 3000);
   }
 
-  async updateProfile() {
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-    if (users.length > 0) {
-      users[users.length - 1] = this.user;
-      localStorage.setItem('users', JSON.stringify(users));
-    }
-
-    const alert = await this.alertController.create({
-      header: 'Perfil Actualizado',
-      message: 'Los cambios se guardaron correctamente',
-      buttons: ['OK']
-    });
-    await alert.present();
+  goHome() {
+    this.router.navigate(['/home']);
   }
-
 }
