@@ -1,3 +1,17 @@
-<p>
-  sidebar works!
-</p>
+<!-- src/app/components/sidebar/sidebar.component.html -->
+<ion-menu side="start" menuId="first" contentId="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>Menú</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-item button (click)="navigate('/home')">Inicio</ion-item>
+      <ion-item button (click)="navigate('/profile')">Perfil</ion-item>
+      <ion-item button (click)="navigate('/settings')">Configuración</ion-item>
+      <ion-item button color="danger" (click)="logout()">Cerrar sesión</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>

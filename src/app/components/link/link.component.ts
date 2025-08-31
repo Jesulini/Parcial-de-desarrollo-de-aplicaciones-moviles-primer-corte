@@ -1,14 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
+  standalone: false,
   selector: 'app-link',
-  templateUrl: './link.component.html',
-  styleUrls: ['./link.component.scss'],
+  template: `<ion-button fill="clear" (click)="navigate()">{{ label }}</ion-button>`
 })
-export class LinkComponent  implements OnInit {
+export class LinkComponent {
+  @Input() label: string = 'Ir';
+  @Input() route: string = '/';
 
-  constructor() { }
+  constructor(private router: Router) {}
 
-  ngOnInit() {}
-
+  navigate() {
+    this.router.navigate([this.route]);
+  }
 }

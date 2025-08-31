@@ -1,31 +1,32 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { UsersService } from '../services/users';
+import { AlertController } from '@ionic/angular';
 
 @Component({
+  standalone: false,
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
-  standalone: false,
 })
 export class RegisterPage implements OnInit {
 
   user = {
-    id: crypto.randomUUID(),
     name: '',
     lastName: '',
     email: '',
     password: '',
-    country: {
-      id: '',
-      value: ''
-    }
+    country: ''
   };
 
   countries: any[] = [];
   errorMessage: string = '';
 
-  constructor(private http: HttpClient, private usersService: UsersService) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
     this.loadCountries();
@@ -33,49 +34,50 @@ export class RegisterPage implements OnInit {
 
   loadCountries() {
     this.http.get<any>('https://countriesnow.space/api/v0.1/countries/flag/unicode')
-      .subscribe({
-        next: (res) => {
-          if (res?.data) {
-            this.countries = res.data.map((c: any) => ({
-              id: c.name,
-              flag: c.unicodeFlag,
-              name: c.name,
-              value: `${c.unicodeFlag} ${c.name}`
-            }));
-          }
-        },
-        error: (err) => console.error('Error al cargar países:', err)
+      .subscribe(res => {
+        if (res.data) {
+          this.countries = res.data;
+        }
+      }, err => {
+        console.error('Error cargando países', err);
       });
   }
 
-  onRegister() {
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i;
-
-    // Validar campos obligatorios
-    if (!this.user.name || !this.user.lastName || !this.user.email || !this.user.password || !this.user.country.id) {
-      this.errorMessage = 'Todos los campos son obligatorios';
-      return;
-    }
-
-    // Validar email
-    if (!emailRegex.test(this.user.email)) {
-      this.errorMessage = 'Correo no válido';
+  async onRegister() {
+    // Validación de campos
+    if (!this.user.name || !this.user.lastName || !this.user.email || !this.user.password || !this.user.country) {
+      this.errorMessage = 'Por favor completa todos los campos';
       return;
     }
 
     this.errorMessage = '';
-    this.usersService.saveUser(this.user);
-    alert('Usuario registrado correctamente!');
-    console.log('Usuario registrado:', this.user);
 
-    // Reset opcional del formulario
-    this.user = {
-      id: crypto.randomUUID(),
-      name: '',
-      lastName: '',
-      email: '',
-      password: '',
-      country: { id: '', value: '' }
-    };
+    // Leer usuarios existentes de LocalStorage
+    let users = JSON.parse(localStorage.getItem('users') || '[]');
+
+    // Validar que el correo no exista
+    const emailExists = users.some((u: any) => u.email === this.user.email);
+    if (emailExists) {
+      this.errorMessage = 'El correo ya está registrado';
+      return;
+    }
+
+    // Agregar el nuevo usuario y guardar
+    users.push(this.user);
+    localStorage.setItem('users', JSON.stringify(users));
+
+    // Mostrar alerta de registro exitoso
+    const alert = await this.alertController.create({
+      header: 'Usuario Registrado',
+      message: 'Tu cuenta se ha creado correctamente',
+      buttons: ['OK']
+    });
+
+    await alert.present();
+
+    // Redirigir al login al cerrar la alerta
+    alert.onDidDismiss().then(() => {
+      this.router.navigate(['/login']);
+    });
   }
 }

@@ -29,7 +29,7 @@
   <ion-item>
     <ion-label>País</ion-label>
     <ion-select [(ngModel)]="user.country" interface="popover">
-      <ion-select-option *ngFor="let c of countries" [value]="c">
+      <ion-select-option *ngFor="let c of countries" [value]="c.name">
         <span>{{ c.flag }}</span> {{ c.name }}
       </ion-select-option>
     </ion-select>

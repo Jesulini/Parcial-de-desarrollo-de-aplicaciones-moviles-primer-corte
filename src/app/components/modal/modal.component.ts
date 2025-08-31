@@ -1,14 +1,42 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { Browser } from '@capacitor/browser'; // 👈 Importación del plugin
 
 @Component({
+  standalone: false,
   selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss'],
+  template: `
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>{{ news?.title }}</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="close()">Cerrar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content class="ion-padding">
+      <img *ngIf="news?.image" [src]="news.image" />
+      <p>{{ news?.description }}</p>
+      <ion-button expand="block" (click)="openInBrowser(news?.url)">
+        Leer más
+      </ion-button>
+    </ion-content>
+  `
 })
-export class ModalComponent  implements OnInit {
+export class ModalComponent {
+  @Input() news: any;
 
-  constructor() { }
+  constructor(private modalCtrl: ModalController) {}
 
-  ngOnInit() {}
+  close() {
+    this.modalCtrl.dismiss();
+  }
 
+  // 🔹 Abre la noticia en el navegador del dispositivo
+  async openInBrowser(url: string) {
+    if (url) {
+      await Browser.open({ url });
+    }
+  }
 }

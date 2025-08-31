@@ -1,0 +1,36 @@
+<form (ngSubmit)="onSubmit()">
+  <!-- Nombre -->
+  <app-input
+    label="Nombre"
+    type="text"
+    placeholder="Escribe tu nombre"
+    [(ngModel)]="userData.name"
+    name="name">
+  </app-input>
+
+  <!-- Email -->
+  <app-input
+    label="Email"
+    type="email"
+    placeholder="Escribe tu correo"
+    [(ngModel)]="userData.email"
+    name="email"
+    required>
+  </app-input>
+
+  <!-- Contraseña -->
+  <app-input
+    label="Contraseña"
+    type="password"
+    placeholder="Escribe tu contraseña"
+    [(ngModel)]="userData.password"
+    name="password"
+    required>
+  </app-input>
+
+  <!-- Botón -->
+  <app-button
+    type="submit"
+    label="Guardar">
+  </app-button>
+</form>
