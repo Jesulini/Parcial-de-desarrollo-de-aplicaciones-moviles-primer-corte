@@ -17,7 +17,8 @@ export class SidebarComponent {
   }
 
   logout() {
-    // Solo cerrar sesión → redirige al login
-    this.router.navigate(['/login']);
-  }
+  localStorage.removeItem('loggedUser'); // si estás guardando el usuario logueado
+  this.router.navigate(['/login']);
+}
+
 }

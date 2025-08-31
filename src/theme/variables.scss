@@ -1,2 +1,18 @@
-// For information on how to create your own theme, please see:
-// http://ionicframework.com/docs/theming/
+// variables.scss
+
+// Background general
+$ion-background-color: #ffffff; // blanco
+$ion-text-color: #000000;       // negro
+
+// Primary
+$ion-color-primary: #3880ff;
+$ion-color-primary-rgb: 56, 128, 255;
+$ion-color-primary-contrast: #ffffff;
+
+// Secondary (opcional)
+$ion-color-secondary: #0cd1e8;
+$ion-color-secondary-contrast: #000000;
+
+// Otros colores si tienes más configuraciones
+$ion-color-light: #f4f5f8;
+$ion-color-dark: #222428;
