@@ -1,39 +1,33 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { News } from '../models/news';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsService {
+  private baseUrl = environment.newsApi.baseUrl;
+  private apiKey = environment.newsApi.apiKey;
 
-  private news: News[] = [
-    {
-      id: 1,
-      title: 'Noticia Principal',
-      description: 'Esta es la noticia principal del día.',
-      image: 'https://via.placeholder.com/300x150',
-      url: 'https://www.example.com/news/1'
-    },
-    {
-      id: 2,
-      title: 'Segunda Noticia',
-      description: 'Descripción de la segunda noticia.',
-      image: 'https://via.placeholder.com/300x150',
-      url: 'https://www.example.com/news/2'
-    },
-    {
-      id: 3,
-      title: 'Tercera Noticia',
-      description: 'Descripción de la tercera noticia.',
-      image: 'https://via.placeholder.com/300x150',
-      url: 'https://www.example.com/news/3'
-    }
-  ];
+  constructor(private http: HttpClient) {}
 
-  constructor() { }
-
-  getNews(): Observable<News[]> {
-    return of(this.news);
+  getTopHeadlines(country: string = 'us', page: number = 1, pageSize: number = 10): Observable<News[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/top-headlines?country=${country}&page=${page}&pageSize=${pageSize}&apiKey=${this.apiKey}`)
+      .pipe(
+        map((res) =>
+          res.articles.map((a: any, index: number) => ({
+            id: index + (page - 1) * pageSize, // id único por página
+            title: a.title,
+            description: a.description,
+            image: a.urlToImage,
+            url: a.url,
+            source: a.source?.name
+          }))
+        )
+      );
   }
 }

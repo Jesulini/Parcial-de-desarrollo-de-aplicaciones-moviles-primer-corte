@@ -37,9 +37,14 @@
       </ion-button>
     </ion-item>
 
+    <!-- 🌍 Selector de países con banderas -->
     <ion-item>
       <ion-label position="stacked">País</ion-label>
-      <ion-input [(ngModel)]="user.country" name="country"></ion-input>
+      <ion-select [(ngModel)]="user.country" name="country" placeholder="Selecciona un país">
+        <ion-select-option *ngFor="let c of countries" [value]="c.name">
+          {{ c.unicodeFlag }} {{ c.name }}
+        </ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 

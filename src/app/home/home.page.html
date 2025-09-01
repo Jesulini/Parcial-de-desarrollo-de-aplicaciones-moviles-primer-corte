@@ -3,11 +3,13 @@
 
 <ion-content id="main-content" class="ion-padding">
 
+  <!-- Noticia principal -->
   <app-principal-news
     [news]="principalNews"
     (clickCard)="openNewsModal($event)">
   </app-principal-news>
 
+  <!-- Lista de noticias -->
   <ion-list>
     <app-card 
       *ngFor="let news of otherNews" 
@@ -15,5 +17,13 @@
       (clickCard)="openNewsModal(news)">
     </app-card>
   </ion-list>
+
+  <!-- Scroll infinito -->
+  <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMoreNews($event)">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Cargando más noticias...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>
