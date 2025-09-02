@@ -14,7 +14,7 @@ export class HomePage implements OnInit {
 
   principalNews: News | null = null;
   otherNews: News[] = [];
-  page = 1; // contador de página
+  page = 1;
 
   constructor(
     private newsService: NewsService,
@@ -28,20 +28,16 @@ export class HomePage implements OnInit {
   loadNews(event?: any) {
     this.newsService.getTopHeadlines('us', this.page).subscribe((data: News[]) => {
       if (this.page === 1) {
-        // primera carga
         this.principalNews = data[0];
         this.otherNews = data.slice(1);
       } else {
-        // cargas adicionales
         this.otherNews = [...this.otherNews, ...data];
       }
 
-      // Completa el evento de scroll infinito
       if (event) {
         event.target.complete();
       }
 
-      // Si no hay más noticias, desactiva el infinite scroll
       if (data.length === 0 && event) {
         event.target.disabled = true;
       }

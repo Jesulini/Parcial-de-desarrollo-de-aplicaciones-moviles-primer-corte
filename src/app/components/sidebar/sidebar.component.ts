@@ -1,4 +1,3 @@
-// src/app/components/sidebar/sidebar.component.ts
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -17,7 +16,7 @@ export class SidebarComponent {
   }
 
   logout() {
-  localStorage.removeItem('loggedUser'); // si estás guardando el usuario logueado
+  localStorage.removeItem('loggedUser');
   this.router.navigate(['/login']);
 }
 

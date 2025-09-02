@@ -44,7 +44,6 @@ export class UsersService {
     return true;
   }
 
-  // 🚀 Nuevo: actualizar usuario
   updateUser(updatedUser: any) {
     let users = this.getUsers();
     users = users.map((u: any) =>

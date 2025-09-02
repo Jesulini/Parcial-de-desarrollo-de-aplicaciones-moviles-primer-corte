@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
-import { ComponentsModule } from '../components/components-module'; // 👈 Importa aquí
+import { ComponentsModule } from '../components/components-module';
 
 @NgModule({
   imports: [
@@ -14,7 +14,7 @@ import { ComponentsModule } from '../components/components-module'; // 👈 Impo
     FormsModule,
     IonicModule,
     HomePageRoutingModule,
-    ComponentsModule  // 👈 Agrega aquí
+    ComponentsModule
   ],
   declarations: [HomePage]
 })

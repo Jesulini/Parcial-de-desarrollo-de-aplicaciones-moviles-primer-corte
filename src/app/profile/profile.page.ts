@@ -13,7 +13,7 @@ export class ProfilePage implements OnInit {
   user: any = {};
   showPassword: boolean = false;
   successMessage: string = "";
-  countries: any[] = []; // 🌍 aquí guardamos países + banderas
+  countries: any[] = [];
 
   constructor(
     private usersService: UsersService,
@@ -25,7 +25,7 @@ export class ProfilePage implements OnInit {
     // Cargar usuario
     this.user = this.usersService.getCurrentUser();
 
-    // Consumir la API de países
+    // Consumir la API
     this.countriesService.getCountries().subscribe((response) => {
       if (response && response.data) {
         this.countries = response.data.sort((a: any, b: any) =>
@@ -41,7 +41,7 @@ export class ProfilePage implements OnInit {
 
   saveProfile() {
     this.usersService.updateUser(this.user);
-    this.successMessage = "✅ Perfil actualizado correctamente";
+    this.successMessage = "Perfil actualizado correctamente";
 
     setTimeout(() => {
       this.successMessage = "";

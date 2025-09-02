@@ -62,7 +62,7 @@ export class SettingsPage {
     await alert.present();
   }
 
-  // ✅ Método para volver al home
+  //Método para volver al home
   goHome() {
     this.router.navigate(['/home']);
   }

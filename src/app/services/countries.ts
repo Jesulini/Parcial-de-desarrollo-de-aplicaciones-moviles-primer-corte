@@ -11,7 +11,6 @@ export class CountriesService {
 
   constructor(private http: HttpClient) {}
 
-  // Método para traer países y banderas
   getCountries(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }

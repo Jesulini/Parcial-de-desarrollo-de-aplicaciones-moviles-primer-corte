@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Browser } from '@capacitor/browser'; // 👈 Importación del plugin
+import { Browser } from '@capacitor/browser';
 
 @Component({
   standalone: false,
@@ -33,7 +33,6 @@ export class ModalComponent {
     this.modalCtrl.dismiss();
   }
 
-  // 🔹 Abre la noticia en el navegador del dispositivo
   async openInBrowser(url: string) {
     if (url) {
       await Browser.open({ url });

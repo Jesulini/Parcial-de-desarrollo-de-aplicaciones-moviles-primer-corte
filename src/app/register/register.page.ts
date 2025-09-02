@@ -75,7 +75,6 @@ export class RegisterPage implements OnInit {
 
     await alert.present();
 
-    // Redirigir al login al cerrar la alerta
     alert.onDidDismiss().then(() => {
       this.router.navigate(['/login']);
     });
